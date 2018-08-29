@@ -5,10 +5,6 @@ const debug = require('debug')('gitdown')
 const axios = require('axios')
 const csv = require('csv')
 
-/**
- *
-*/
-
 const githubApi = {
   getLimits() {
     return axios.get('https://api.github.com/rate_limit').then(res => {
@@ -24,7 +20,6 @@ const githubApi = {
 }
 
 const githubLimiter = opts => {
-
   let currLimit = opts.remaining
 
   return new Transform({
@@ -56,7 +51,6 @@ const githubLimiter = opts => {
   })
 }
 
-
 const githubDownloader = new Transform({
   objectMode: true,
   transform(chunk, encoding, next) {
@@ -77,5 +71,4 @@ githubApi.getLimits().then(limits => {
     .pipe(githubDownloader)
     .pipe(csv.stringify({ header: true }))
     .pipe(process.stdout)
-
 })
