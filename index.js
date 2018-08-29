@@ -1,21 +1,21 @@
 const fs = require('fs')
 const path = require('path')
-const { Transform } = require('stream');
+const { Transform } = require('stream')
 const debug = require('debug')('gitdown')
 const axios = require('axios')
 const csv = require('csv')
 
 const githubApi = {
-  getLimits() {
+  getLimits () {
     return axios.get('https://api.github.com/rate_limit').then(res => {
       debug('Current rate limits %o', res.data.rate)
       return res.data.rate
     })
   },
-  getRepoUpdatedAt(url) {
+  getRepoUpdatedAt (url) {
     return axios.get(url)
-       .then(res => res.data.updated_at)
-       .catch(e => 'No info')
+      .then(res => res.data.updated_at)
+      .catch(e => 'No info')
   }
 }
 
@@ -24,7 +24,7 @@ const githubLimiter = opts => {
 
   return new Transform({
     objectMode: true,
-    transform(chunk, encoding, next) {
+    transform (chunk, encoding, next) {
       debug('Got chunk in limiter')
       // For some reason, when github report remaining = 58 I can make only 57 requests,
       // last request is always failing with 'rate limit exceeded' :( , so I'm pausing before
@@ -45,7 +45,7 @@ const githubLimiter = opts => {
           this.resume()
           debug('Resume after timeout')
           next(null, chunk) // process chunk after timeout
-        }, wait);
+        }, wait)
       })
     }
   })
@@ -53,7 +53,7 @@ const githubLimiter = opts => {
 
 const githubDownloader = new Transform({
   objectMode: true,
-  transform(chunk, encoding, next) {
+  transform (chunk, encoding, next) {
     debug('Got chunk in downloader')
     githubApi.getRepoUpdatedAt(chunk.repo_url).then(updatedAt => {
       debug('Fetched lastUpdate: %s', updatedAt)

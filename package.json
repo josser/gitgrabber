@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "DEBUG=gitdown node index.js"
   },
   "author": "Dmitry Chirkin <josser@nixsolutions.com>",
   "license": "MIT",
@@ -12,5 +13,13 @@
     "axios": "^0.18.0",
     "csv": "^3.1.0",
     "debug": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.2.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-standard": "^4.0.0"
   }
 }
